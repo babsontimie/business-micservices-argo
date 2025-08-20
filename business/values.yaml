@@ -20,7 +20,7 @@ tls:
 
 services:
   frontend:
-    image: frontend:latest
+    image: oktbabs/frontend:latest
     replicas: 2
     port: 8080
     containerPort: 8080
@@ -54,7 +54,7 @@ services:
               averageUtilization: 70
 
   adservice:
-    image: adservice:latest
+    image: oktbabs/adservice:latest
     replicas: 1
     port: 9555
     containerPort: 9555
@@ -81,7 +81,7 @@ services:
               averageUtilization: 65
 
   shippingservice:
-    image: shippingservice:latest
+    image: oktbabs/shippingservice:latest
     replicas: 1
     port: 50051
     containerPort: 50051
@@ -108,7 +108,7 @@ services:
               averageUtilization: 70
 
   currencyservice:
-    image: currencyservice:latest
+    image: oktbabs/currencyservice:latest
     replicas: 1
     port: 7000
     containerPort: 7000
@@ -137,7 +137,7 @@ services:
               averageUtilization: 65
 
   cartservice:
-    image: cartservice:latest
+    image: oktbabs/cartservice:latest
     replicas: 1
     port: 7070
     containerPort: 7070
@@ -166,7 +166,7 @@ services:
               averageUtilization: 70
 
   productcatalogservice:
-    image: productcatalogservice:latest
+    image: oktbabs/productcatalogservice:latest
     replicas: 1
     port: 3550
     containerPort: 3550
@@ -195,7 +195,7 @@ services:
               averageUtilization: 70
 
   paymentservice:
-    image: paymentservice:latest
+    image: oktbabs/paymentservice:latest
     replicas: 2
     port: 50051
     containerPort: 50051
@@ -222,7 +222,7 @@ services:
               averageUtilization: 75
 
   recommendationservice:
-    image: recommendationservice:latest
+    image: oktbabs/recommendationservice:latest
     replicas: 1
     port: 8080
     containerPort: 8080
@@ -251,7 +251,7 @@ services:
               averageUtilization: 65
 
   checkoutservice:
-    image: checkoutservice:latest
+    image: oktbabs/checkoutservice:latest
     replicas: 2
     port: 5050
     containerPort: 5050
@@ -280,7 +280,7 @@ services:
               averageUtilization: 70
 
   emailservice:
-    image: emailservice:latest
+    image: oktbabs/emailservice:latest
     replicas: 1
     port: 5000
     containerPort: 5000
