@@ -2,6 +2,11 @@ global:
   imagePullPolicy: IfNotPresent
   namespace: dev
 
+image:
+  repository: oktbabs
+  pullPolicy: IfNotPresent
+  tag: ""
+
 commonLabels:
   app.kubernetes.io/part-of: business
 
