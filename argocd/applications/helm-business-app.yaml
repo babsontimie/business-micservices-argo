@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: 'https://github.com/babsontimie/business-micservices-argo.git'     #🔹 your Git repo
     targetRevision: HEAD                                                       # 🔹 branch/tag
-    path: business-chart/business                                     # 🔹 chart path in repo
+    path: business                                     # 🔹 chart path in repo
     helm:
       valueFiles:
         - values.yaml                                         # use your values file
