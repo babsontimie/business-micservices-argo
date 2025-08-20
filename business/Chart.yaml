@@ -1,0 +1,6 @@
+apiVersion: v2
+name: business
+description: A generic microservices Helm chart with templated Deployments, Services, Ingress, Probes, and HPAs
+type: application
+version: 0.2.0
+appVersion: "1.0.0"

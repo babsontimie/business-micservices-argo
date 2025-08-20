@@ -1,0 +1,21 @@
+{{- $fullname := include "business.fullname" . -}}
+{{- range $name, $svc := .Values.services }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $fullname }}-{{ $name }}
+  labels:
+{{- include "business.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $name }}
+spec:
+  type: {{ default "ClusterIP" $svc.serviceType }}
+  selector:
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/component: {{ $name }}
+  ports:
+    - name: http
+      port: {{ default 80 $svc.port }}
+      targetPort: {{ default 8080 $svc.containerPort }}
+{{- end }}
+

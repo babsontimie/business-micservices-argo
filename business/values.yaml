@@ -1,0 +1,309 @@
+global:
+  imagePullPolicy: IfNotPresent
+  namespace: dev
+
+commonLabels:
+  app.kubernetes.io/part-of: business
+
+resources: {}
+
+ingressClassName: ""
+
+tls:
+  enabled: false
+  secretName: ""
+
+services:
+  frontend:
+    image: frontend
+    replicas: 2
+    port: 8080
+    containerPort: 8080
+    ingress:
+      enabled: true
+      host: frontend.example.com
+      path: /
+      pathType: Prefix
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    hpa:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 5
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 70
+
+  adservice:
+    image: adservice
+    replicas: 1
+    port: 9555
+    containerPort: 9555
+    livenessProbe:
+      tcpSocket:
+        port: 9555
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      tcpSocket:
+        port: 9555
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    hpa:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 4
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 65
+
+  shippingservice:
+    image: shippingservice
+    replicas: 1
+    port: 50051
+    containerPort: 50051
+    livenessProbe:
+      tcpSocket:
+        port: 50051
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      tcpSocket:
+        port: 50051
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    hpa:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 3
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 70
+
+  currencyservice:
+    image: currencyservice
+    replicas: 1
+    port: 7000
+    containerPort: 7000
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 7000
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 7000
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    hpa:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 4
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 65
+
+  cartservice:
+    image: cartservice
+    replicas: 1
+    port: 7070
+    containerPort: 7070
+    livenessProbe:
+      httpGet:
+        path: /_healthz
+        port: 7070
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /_ready
+        port: 7070
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    hpa:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 4
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 70
+
+  productcatalogservice:
+    image: productcatalogservice
+    replicas: 1
+    port: 3550
+    containerPort: 3550
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 3550
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 3550
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    hpa:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 3
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 70
+
+  paymentservice:
+    image: paymentservice
+    replicas: 2
+    port: 50051
+    containerPort: 50051
+    livenessProbe:
+      tcpSocket:
+        port: 50051
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      tcpSocket:
+        port: 50051
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    hpa:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 6
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 75
+
+  recommendationservice:
+    image: recommendationservice
+    replicas: 1
+    port: 8080
+    containerPort: 8080
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    hpa:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 3
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 65
+
+  checkoutservice:
+    image: checkoutservice
+    replicas: 2
+    port: 5050
+    containerPort: 5050
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 5050
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 5050
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    hpa:
+      enabled: true
+      minReplicas: 2
+      maxReplicas: 5
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 70
+
+  emailservice:
+    image: emailservice
+    replicas: 1
+    port: 5000
+    containerPort: 5000
+    ingress:
+      enabled: true
+      host: email.example.com
+      path: /
+      pathType: Prefix
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 5000
+      initialDelaySeconds: 3
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 5000
+      initialDelaySeconds: 3
+      periodSeconds: 10
+    hpa:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 4
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 70
