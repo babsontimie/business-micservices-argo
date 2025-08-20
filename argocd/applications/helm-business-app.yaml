@@ -12,7 +12,7 @@ spec:
     path: business-chart/business                                     # 🔹 chart path in repo
     helm:
       valueFiles:
-        - dev-values.yaml                                         # use your values file
+        - values.yaml                                         # use your values file
   destination:
     server: https://kubernetes.default.svc
     namespace: dev                                          # 🔹 namespace for microservices
