@@ -53,7 +53,7 @@ services:
   #             type: Utilization
   #             averageUtilization: 70
   frontend:
-    image: frontend
+    image: oktbabs/frontend
     port: 80
     targetPort: 8080
     type: LoadBalancer
@@ -140,7 +140,7 @@ services:
   #             averageUtilization: 65
 
   adservice:
-    image: adservice
+    image: oktbabs/adservice
     port: 9555
     targetPort: 9555
     env:
@@ -203,7 +203,7 @@ services:
   #             averageUtilization: 70
 
   shippingservice:
-    image: shippingservice
+    image: oktbabs/shippingservice
     port: 50051
     targetPort: 50051
     env:
@@ -270,7 +270,7 @@ services:
   #             averageUtilization: 65
 
   currencyservice:
-    image: currencyservice
+    image: oktbabs/currencyservice
     port: 7000
     targetPort: 7000
     env:
@@ -334,7 +334,7 @@ services:
   #             averageUtilization: 70
 
   redis-cart:
-    image: redis-cart
+    image: oktbabs/redis-cart
     port: 6379
     targetPort: 6379
     env: []
@@ -366,7 +366,7 @@ services:
               averageUtilization: 70    
 
   loadgenerator:
-    image: loadgenerator
+    image: oktbabs/loadgenerator
     port: 8080
     targetPort: 8080
     env:
@@ -396,7 +396,7 @@ services:
               averageUtilization: 70    
               
   cartservice:
-    image: cartservice
+    image: oktbabs/cartservice
     port: 7070
     targetPort: 7070
     env:
@@ -460,7 +460,7 @@ services:
   #             averageUtilization: 70
 
   productcatalogservice:
-    image: productcatalogservice
+    image: oktbabs/productcatalogservice
     port: 3550
     targetPort: 3550
     env:
@@ -522,7 +522,7 @@ services:
   #             averageUtilization: 75
 
   paymentservice:
-    image: paymentservice
+    image: oktbabs/paymentservice
     port: 50051
     targetPort: 50051
     env:
@@ -586,7 +586,7 @@ services:
   #             averageUtilization: 65
 
   recommendationservice:
-    image: recommendationservice
+    image: oktbabs/recommendationservice
     port: 8080
     targetPort: 8080
     env:
@@ -702,7 +702,7 @@ services:
   #             averageUtilization: 70
 
   emailservice:
-    image: emailservice
+    image: oktbabs/emailservice
     port: 5000
     targetPort: 8080
     env:
