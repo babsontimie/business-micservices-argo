@@ -163,7 +163,7 @@ services:
       limits:
         cpu: 300m
         memory: 300Mi
-     hpa:
+    hpa:
       enabled: true
       minReplicas: 1
       maxReplicas: 4
