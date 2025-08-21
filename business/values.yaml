@@ -337,7 +337,11 @@ services:
     image: oktbabs/redis-cart:latest
     port: 6379
     targetPort: 6379
-    #env: []
+    env: 
+      - name: REDIS_HOST
+        value: "redis"
+      - name: REDIS_PORT
+        value: "6379"    
     readinessProbe:
       tcpSocket:
         port: 6379
