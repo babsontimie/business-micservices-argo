@@ -601,7 +601,6 @@ recommendationservice:
   image: oktbabs/recommendationservice:latest
   port: 8080
   targetPort: 8080
-
   env:
     - name: PORT
       value: "8080"
@@ -613,12 +612,10 @@ recommendationservice:
     exec:
       command: ["/bin/grpc_health_probe", "-addr=:8080"]
     periodSeconds: 5
-
   livenessProbe:
     exec:
       command: ["/bin/grpc_health_probe", "-addr=:8080"]
     periodSeconds: 5
-
   resources:
     requests:
       cpu: 100m
