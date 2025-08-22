@@ -133,6 +133,9 @@ microservices:
     replicas: 1
     port: 50051
     containerPort: 50051
+    env:
+      - name: DISABLE_PROFILER
+        value: "1"    
     profiler:
       enabled: false
       projectId: ""
