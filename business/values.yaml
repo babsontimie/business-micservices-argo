@@ -462,6 +462,9 @@ services:
             target:
               type: Utilization
               averageUtilization: 70
+    profiler:
+    enabled: false          # disable in local/dev
+    projectId: ""           # only required if enabled outside GCP
 
   # productcatalogservice:
   #   image: oktbabs/productcatalogservice:latest
