@@ -597,46 +597,50 @@ services:
   #             type: Utilization
   #             averageUtilization: 65
 
-  recommendationservice:
-    image: oktbabs/recommendationservice:latest
-    port: 8080
-    targetPort: 8080
-    env:
-      - name: PORT
-        value: "8080"
-      - name: PRODUCT_CATALOG_SERVICE_ADDR
-        value: "productcatalogservice:3550"
-      - name: DISABLE_PROFILER
-        value: "1"
-    readinessProbe:
-      exec:
-        command: ["/bin/grpc_health_probe", "-addr=:8080"]
-      periodSeconds: 5
-    livenessProbe:
-      exec:
-        command: ["/bin/grpc_health_probe", "-addr=:8080"]
-      periodSeconds: 5
-    resources:
-      requests:
-        cpu: 100m
-        memory: 220Mi
-      limits:
-        cpu: 200m
-        memory: 450Mi
-    hpa:
-      enabled: true
-      minReplicas: 1
-      maxReplicas: 3
-      metrics:
-        - type: Resource
-          resource:
-            name: cpu
-            target:
-              type: Utilization
-              averageUtilization: 65
-    profiler:
+recommendationservice:
+  image: oktbabs/recommendationservice:latest
+  port: 8080
+  targetPort: 8080
+
+  env:
+    - name: PORT
+      value: "8080"
+    - name: PRODUCT_CATALOG_SERVICE_ADDR
+      value: "productcatalogservice:3550"
+    - name: GOOGLE_PROFILER_DISABLE
+      value: "1"   # disables Stackdriver Profiler
+  readinessProbe:
+    exec:
+      command: ["/bin/grpc_health_probe", "-addr=:8080"]
+    periodSeconds: 5
+
+  livenessProbe:
+    exec:
+      command: ["/bin/grpc_health_probe", "-addr=:8080"]
+    periodSeconds: 5
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 220Mi
+    limits:
+      cpu: 200m
+      memory: 450Mi
+  hpa:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 3
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 65
+  profiler:
     enabled: false
     projectId: ""
+
   
   checkoutservice:
     image: oktbabs/checkoutservice:latest
