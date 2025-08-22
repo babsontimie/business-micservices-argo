@@ -529,7 +529,10 @@ services:
             target:
               type: Utilization
               averageUtilization: 75
-
+    profiler:
+    enabled: false          # disable in local/dev
+    projectId: ""           # only required if enabled outside GCP
+    
   # paymentservice:
   #   image: oktbabs/paymentservice:latest
   #   port: 50051
