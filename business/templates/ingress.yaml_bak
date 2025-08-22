@@ -1,0 +1,39 @@
+{{- $fullname := include "business.fullname" . -}}
+{{- $ingressClass := .Values.ingressClassName -}}
+{{- $tls := .Values.tls -}}
+{{- range $name, $svc := .Values.services }}
+{{- if and $svc.ingress $svc.ingress.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullname }}-{{ $name }}
+  labels:
+    {{- include "business.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $name }}
+spec:
+  {{- if $ingressClass }}
+  ingressClassName: {{ $ingressClass }}
+  {{- end }}
+  {{- if $tls.enabled }}
+  tls:
+    - hosts:
+        - {{ $svc.ingress.host | quote }}
+      {{- if $.Values.tls.secretName }}
+      secretName: {{ $.Values.tls.secretName }}
+      {{- end }}
+  {{- end }}
+  rules:
+    - host: {{ $svc.ingress.host | quote }}
+      http:
+        paths:
+          - path: {{ default "/" $svc.ingress.path }}
+            pathType: {{ default "Prefix" $svc.ingress.pathType }}
+            backend:
+              service:
+                name: {{ $fullname }}-{{ $name }}
+                port:
+                  number: {{ default 80 $svc.port }}
+{{- end }}
+{{- end }}
+

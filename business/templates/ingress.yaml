@@ -1,39 +1,28 @@
-{{- $fullname := include "business.fullname" . -}}
-{{- $ingressClass := .Values.ingressClassName -}}
-{{- $tls := .Values.tls -}}
-{{- range $name, $svc := .Values.services }}
+
+
+
+{{- range $name, $svc := .Values.microservices }}
 {{- if and $svc.ingress $svc.ingress.enabled }}
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ $fullname }}-{{ $name }}
-  labels:
-    {{- include "business.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: {{ $name }}
+  name: {{ $.Release.Name }}-{{ $svc.name }}
+  namespace: {{ $.Values.global.namespace }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
 spec:
-  {{- if $ingressClass }}
-  ingressClassName: {{ $ingressClass }}
-  {{- end }}
-  {{- if $tls.enabled }}
-  tls:
-    - hosts:
-        - {{ $svc.ingress.host | quote }}
-      {{- if $.Values.tls.secretName }}
-      secretName: {{ $.Values.tls.secretName }}
-      {{- end }}
-  {{- end }}
   rules:
-    - host: {{ $svc.ingress.host | quote }}
+    - host: {{ $svc.ingress.host }}
       http:
         paths:
-          - path: {{ default "/" $svc.ingress.path }}
-            pathType: {{ default "Prefix" $svc.ingress.pathType }}
+          - path: {{ $svc.ingress.path | default "/" }}
+            pathType: Prefix
             backend:
               service:
-                name: {{ $fullname }}-{{ $name }}
+                name: {{ $.Release.Name }}-{{ $svc.name }}
                 port:
-                  number: {{ default 80 $svc.port }}
+                  number: {{ $svc.containerPort | default $svc.port }}
+---
 {{- end }}
 {{- end }}
 

@@ -1,48 +1,59 @@
-{{- $fullname := include "business.fullname" . -}}
-{{- range $name, $svc := .Values.services }}
----
+
+{{- range $name, $svc := .Values.microservices }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $fullname }}-{{ $name }}
+  name: {{ $.Release.Name }}-{{ $svc.name }}
+  namespace: {{ $.Values.global.namespace }}
   labels:
-    {{- include "business.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: {{ $name }}
+    app: {{ $svc.name }}
 spec:
-  replicas: {{ default 1 $svc.replicas }}
+  replicas: {{ $svc.replicas | default 1 }}
   selector:
     matchLabels:
-      app.kubernetes.io/instance: {{ $.Release.Name }}
-      app.kubernetes.io/component: {{ $name }}
+      app: {{ $svc.name }}
   template:
     metadata:
       labels:
-        {{- include "business.labels" $ | nindent 8 }}
-        app.kubernetes.io/component: {{ $name }}
+        app: {{ $svc.name }}
     spec:
       containers:
-        - name: {{ $name }}
-          image: {{ required (printf "image is required for %s" $name) $svc.image }}
-          imagePullPolicy: {{ default $.Values.global.imagePullPolicy $svc.imagePullPolicy }}
+        - name: {{ $svc.name }}
+          image: {{ $svc.image }}
           ports:
-            - name: http
-              containerPort: {{ default 8080 $svc.containerPort }}
-          {{- if $svc.env }}
+            - containerPort: {{ $svc.containerPort | default $svc.port }}
           env:
-            {{- range $k, $v := $svc.env }}
-            - name: {{ $k }}
-              value: {{ $v | quote }}
+            - name: PORT
+              value: "{{ $svc.port }}"
+
+            {{- if $svc.productCatalogServiceAddr }}
+            - name: PRODUCT_CATALOG_SERVICE_ADDR
+              value: "{{ $svc.productCatalogServiceAddr }}"
             {{- end }}
-          {{- end }}
+
+            # Profiler env var
+            {{- if $svc.profiler.enabled }}
+            - name: GOOGLE_CLOUD_PROJECT
+              value: "{{ $svc.profiler.projectId }}"
+            {{- else }}
+            - name: GOOGLE_CLOUD_PROFILER_DISABLE
+              value: "1"
+            {{- end }}
+
           {{- if $svc.livenessProbe }}
           livenessProbe:
             {{- toYaml $svc.livenessProbe | nindent 12 }}
           {{- end }}
+
           {{- if $svc.readinessProbe }}
           readinessProbe:
             {{- toYaml $svc.readinessProbe | nindent 12 }}
           {{- end }}
+
+          {{- if $svc.resources }}
           resources:
-            {{- toYaml (default $.Values.resources $svc.resources) | nindent 12 }}
+            {{- toYaml $svc.resources | nindent 12 }}
+          {{- end }}
+---
 {{- end }}
 

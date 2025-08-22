@@ -1,23 +1,31 @@
-{{- $fullname := include "business.fullname" . -}}
-{{- range $name, $svc := .Values.services }}
-{{- if and $svc.hpa $svc.hpa.enabled }}
----
+
+
+{{- range $name, $svc := .Values.microservices }}
+{{- if $svc.hpa.enabled }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ $fullname }}-{{ $name }}
-  labels:
-    {{- include "business.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: {{ $name }}
+  name: {{ $.Release.Name }}-{{ $svc.name }}
+  namespace: {{ $.Values.global.namespace }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ $fullname }}-{{ $name }}
-  minReplicas: {{ $svc.hpa.minReplicas }}
-  maxReplicas: {{ $svc.hpa.maxReplicas }}
+    name: {{ $.Release.Name }}-{{ $svc.name }}
+  minReplicas: {{ $svc.hpa.minReplicas | default 1 }}
+  maxReplicas: {{ $svc.hpa.maxReplicas | default 3 }}
   metrics:
-    {{- toYaml $svc.hpa.metrics | nindent 4 }}
+  {{- range $svc.hpa.metrics }}
+    - type: {{ .type }}
+      {{- if eq .type "Resource" }}
+      resource:
+        name: {{ .resource.name }}
+        target:
+          type: {{ .resource.target.type }}
+          averageUtilization: {{ .resource.target.averageUtilization }}
+      {{- end }}
+  {{- end }}
+---
 {{- end }}
 {{- end }}
 

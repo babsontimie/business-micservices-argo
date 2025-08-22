@@ -1,21 +1,21 @@
-{{- $fullname := include "business.fullname" . -}}
-{{- range $name, $svc := .Values.services }}
----
+
+
+{{- range $name, $svc := .Values.microservices }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $fullname }}-{{ $name }}
+  name: {{ $.Release.Name }}-{{ $svc.name }}
+  namespace: {{ $.Values.global.namespace }}
   labels:
-{{- include "business.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: {{ $name }}
+    app: {{ $svc.name }}
 spec:
-  type: {{ default "ClusterIP" $svc.serviceType }}
+  type: ClusterIP
   selector:
-    app.kubernetes.io/instance: {{ $.Release.Name }}
-    app.kubernetes.io/component: {{ $name }}
+    app: {{ $svc.name }}
   ports:
-    - name: http
-      port: {{ default 80 $svc.port }}
-      targetPort: {{ default 8080 $svc.containerPort }}
+    - port: {{ $svc.port }}
+      targetPort: {{ $svc.containerPort | default $svc.port }}
+      protocol: TCP
+---
 {{- end }}
 
