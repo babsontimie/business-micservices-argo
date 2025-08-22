@@ -503,7 +503,9 @@ services:
     replicas: 2
     port: 50051
     containerPort: 50051
-    livenessProbe:
+    env:
+      - name: PORT
+        value: "50051"   # Or any valid gRPC port    livenessProbe:
       tcpSocket:
         port: 50051
       initialDelaySeconds: 5
