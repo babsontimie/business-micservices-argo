@@ -631,7 +631,10 @@ services:
             target:
               type: Utilization
               averageUtilization: 65
-
+    profiler:
+    enabled: false
+    projectId: ""
+  
   checkoutservice:
     image: oktbabs/checkoutservice:latest
     replicas: 2
