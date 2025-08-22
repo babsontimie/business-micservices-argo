@@ -606,7 +606,7 @@ recommendationservice:
       value: "8080"
     - name: PRODUCT_CATALOG_SERVICE_ADDR
       value: "productcatalogservice:3550"
-    - name: GOOGLE_PROFILER_DISABLE
+    - name: GOOGLE_CLOUD_PROFILER_DISABLE
       value: "1"   # disables Stackdriver Profiler
   readinessProbe:
     exec:
