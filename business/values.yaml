@@ -112,185 +112,21 @@ services:
               averageUtilization: 70  
 
               
-  # adservice:
-  #   image: oktbabs/adservice:latest
-  #   replicas: 1
-  #   port: 9555
-  #   containerPort: 9555
-  #   livenessProbe:
-  #     tcpSocket:
-  #       port: 9555
-  #     initialDelaySeconds: 5
-  #     periodSeconds: 10
-  #   readinessProbe:
-  #     tcpSocket:
-  #       port: 9555
-  #     initialDelaySeconds: 5
-  #     periodSeconds: 10
-  #   hpa:
-  #     enabled: true
-  #     minReplicas: 1
-  #     maxReplicas: 4
-  #     metrics:
-  #       - type: Resource
-  #         resource:
-  #           name: cpu
-  #           target:
-  #             type: Utilization
-  #             averageUtilization: 65
-
   adservice:
     image: oktbabs/adservice:latest
+    replicas: 1
     port: 9555
-    targetPort: 9555
-    env:
-      - name: PORT
-        value: "9555"
-    readinessProbe:
-      exec:
-        command: ["/bin/grpc_health_probe", "-addr=:9555"]
-      initialDelaySeconds: 20
-      periodSeconds: 15
+    containerPort: 9555
     livenessProbe:
-      exec:
-        command: ["/bin/grpc_health_probe", "-addr=:9555"]
-      initialDelaySeconds: 20
-      periodSeconds: 15
-    resources:
-      requests:
-        cpu: 200m
-        memory: 180Mi
-      limits:
-        cpu: 300m
-        memory: 300Mi
-    hpa:
-      enabled: true
-      minReplicas: 1
-      maxReplicas: 4
-      metrics:
-        - type: Resource
-          resource:
-            name: cpu
-            target:
-              type: Utilization
-              averageUtilization: 65       
-
-  # shippingservice:
-  #   image: oktbabs/shippingservice:latest
-  #   replicas: 1
-  #   port: 50051
-  #   containerPort: 50051
-  #   livenessProbe:
-  #     tcpSocket:
-  #       port: 50051
-  #     initialDelaySeconds: 5
-  #     periodSeconds: 10
-  #   readinessProbe:
-  #     tcpSocket:
-  #       port: 50051
-  #     initialDelaySeconds: 5
-  #     periodSeconds: 10
-  #   hpa:
-  #     enabled: true
-  #     minReplicas: 1
-  #     maxReplicas: 3
-  #     metrics:
-  #       - type: Resource
-  #         resource:
-  #           name: cpu
-  #           target:
-  #             type: Utilization
-  #             averageUtilization: 70
-
-  shippingservice:
-    image: oktbabs/shippingservice:latest
-    port: 50051
-    targetPort: 50051
-    env:
-      - name: PORT
-        value: "50051"
-      - name: DISABLE_PROFILER
-        value: "1"
+      tcpSocket:
+        port: 9555
+      initialDelaySeconds: 5
+      periodSeconds: 10
     readinessProbe:
-      exec:
-        command: ["/bin/grpc_health_probe", "-addr=:50051"]
-      periodSeconds: 5
-    livenessProbe:
-      exec:
-        command: ["/bin/grpc_health_probe", "-addr=:50051"]
-      periodSeconds: 5
-    resources:
-      requests:
-        cpu: 100m
-        memory: 64Mi
-      limits:
-        cpu: 200m
-        memory: 128Mi
-    hpa:
-      enabled: true
-      minReplicas: 1
-      maxReplicas: 3
-      metrics:
-        - type: Resource
-          resource:
-            name: cpu
-            target:
-              type: Utilization
-              averageUtilization: 70
-        
-
-
-  # currencyservice:
-  #   image: oktbabs/currencyservice:latest
-  #   replicas: 1
-  #   port: 7000
-  #   containerPort: 7000
-  #   livenessProbe:
-  #     httpGet:
-  #       path: /healthz
-  #       port: 7000
-  #     initialDelaySeconds: 5
-  #     periodSeconds: 10
-  #   readinessProbe:
-  #     httpGet:
-  #       path: /ready
-  #       port: 7000
-  #     initialDelaySeconds: 5
-  #     periodSeconds: 10
-  #   hpa:
-  #     enabled: true
-  #     minReplicas: 1
-  #     maxReplicas: 4
-  #     metrics:
-  #       - type: Resource
-  #         resource:
-  #           name: cpu
-  #           target:
-  #             type: Utilization
-  #             averageUtilization: 65
-
-  currencyservice:
-    image: oktbabs/currencyservice:latest
-    port: 7000
-    targetPort: 7000
-    env:
-      - name: PORT
-        value: "7000"
-      - name: DISABLE_PROFILER
-        value: "1"
-    readinessProbe:
-      exec:
-        command: ["/bin/grpc_health_probe", "-addr=:7000"]
-    livenessProbe:
-      exec:
-        command: ["/bin/grpc_health_probe", "-addr=:7000"]
-    resources:
-      requests:
-        cpu: 100m
-        memory: 64Mi
-      limits:
-        cpu: 200m
-        memory: 128Mi
+      tcpSocket:
+        port: 9555
+      initialDelaySeconds: 5
+      periodSeconds: 10
     hpa:
       enabled: true
       minReplicas: 1
@@ -302,6 +138,170 @@ services:
             target:
               type: Utilization
               averageUtilization: 65
+
+  # adservice:
+  #   image: oktbabs/adservice:latest
+  #   port: 9555
+  #   targetPort: 9555
+  #   env:
+  #     - name: PORT
+  #       value: "9555"
+  #   readinessProbe:
+  #     exec:
+  #       command: ["/bin/grpc_health_probe", "-addr=:9555"]
+  #     initialDelaySeconds: 20
+  #     periodSeconds: 15
+  #   livenessProbe:
+  #     exec:
+  #       command: ["/bin/grpc_health_probe", "-addr=:9555"]
+  #     initialDelaySeconds: 20
+  #     periodSeconds: 15
+  #   resources:
+  #     requests:
+  #       cpu: 200m
+  #       memory: 180Mi
+  #     limits:
+  #       cpu: 300m
+  #       memory: 300Mi
+  #   hpa:
+  #     enabled: true
+  #     minReplicas: 1
+  #     maxReplicas: 4
+  #     metrics:
+  #       - type: Resource
+  #         resource:
+  #           name: cpu
+  #           target:
+  #             type: Utilization
+  #             averageUtilization: 65       
+
+  shippingservice:
+    image: oktbabs/shippingservice:latest
+    replicas: 1
+    port: 50051
+    containerPort: 50051
+    livenessProbe:
+      tcpSocket:
+        port: 50051
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      tcpSocket:
+        port: 50051
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    hpa:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 3
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 70
+
+  # shippingservice:
+  #   image: oktbabs/shippingservice:latest
+  #   port: 50051
+  #   targetPort: 50051
+  #   env:
+  #     - name: PORT
+  #       value: "50051"
+  #     - name: DISABLE_PROFILER
+  #       value: "1"
+  #   readinessProbe:
+  #     exec:
+  #       command: ["/bin/grpc_health_probe", "-addr=:50051"]
+  #     periodSeconds: 5
+  #   livenessProbe:
+  #     exec:
+  #       command: ["/bin/grpc_health_probe", "-addr=:50051"]
+  #     periodSeconds: 5
+  #   resources:
+  #     requests:
+  #       cpu: 100m
+  #       memory: 64Mi
+  #     limits:
+  #       cpu: 200m
+  #       memory: 128Mi
+  #   hpa:
+  #     enabled: true
+  #     minReplicas: 1
+  #     maxReplicas: 3
+  #     metrics:
+  #       - type: Resource
+  #         resource:
+  #           name: cpu
+  #           target:
+  #             type: Utilization
+  #             averageUtilization: 70
+        
+
+
+  currencyservice:
+    image: oktbabs/currencyservice:latest
+    replicas: 1
+    port: 7000
+    containerPort: 7000
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 7000
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 7000
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    hpa:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 4
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 65
+
+  # currencyservice:
+  #   image: oktbabs/currencyservice:latest
+  #   port: 7000
+  #   targetPort: 7000
+  #   env:
+  #     - name: PORT
+  #       value: "7000"
+  #     - name: DISABLE_PROFILER
+  #       value: "1"
+  #   readinessProbe:
+  #     exec:
+  #       command: ["/bin/grpc_health_probe", "-addr=:7000"]
+  #   livenessProbe:
+  #     exec:
+  #       command: ["/bin/grpc_health_probe", "-addr=:7000"]
+  #   resources:
+  #     requests:
+  #       cpu: 100m
+  #       memory: 64Mi
+  #     limits:
+  #       cpu: 200m
+  #       memory: 128Mi
+  #   hpa:
+  #     enabled: true
+  #     minReplicas: 1
+  #     maxReplicas: 4
+  #     metrics:
+  #       - type: Resource
+  #         resource:
+  #           name: cpu
+  #           target:
+  #             type: Utilization
+  #             averageUtilization: 65
         
 
   # cartservice:
@@ -434,57 +434,23 @@ services:
               type: Utilization
               averageUtilization: 70        
 
-  # productcatalogservice:
-  #   image: oktbabs/productcatalogservice:latest
-  #   replicas: 1
-  #   port: 3550
-  #   containerPort: 3550
-  #   livenessProbe:
-  #     httpGet:
-  #       path: /healthz
-  #       port: 3550
-  #     initialDelaySeconds: 5
-  #     periodSeconds: 10
-  #   readinessProbe:
-  #     httpGet:
-  #       path: /ready
-  #       port: 3550
-  #     initialDelaySeconds: 5
-  #     periodSeconds: 10
-  #   hpa:
-  #     enabled: true
-  #     minReplicas: 1
-  #     maxReplicas: 3
-  #     metrics:
-  #       - type: Resource
-  #         resource:
-  #           name: cpu
-  #           target:
-  #             type: Utilization
-  #             averageUtilization: 70
-
   productcatalogservice:
     image: oktbabs/productcatalogservice:latest
+    replicas: 1
     port: 3550
-    targetPort: 3550
-    env:
-      - name: PORT
-        value: "3550"
-      - name: DISABLE_PROFILER
-        value: "1"
-    readinessProbe:
-      exec:
-        command: ["/bin/grpc_health_probe", "-addr=:3550"]
+    containerPort: 3550
     livenessProbe:
-      exec:
-        command: ["/bin/grpc_health_probe", "-addr=:3550"]
-    resources:
-      requests:
-        cpu: 100m
-        memory: 64Mi
-      limits:
-        cpu: 200m
-        memory: 128Mi
+      httpGet:
+        path: /healthz
+        port: 3550
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 3550
+      initialDelaySeconds: 5
+      periodSeconds: 10
     hpa:
       enabled: true
       minReplicas: 1
@@ -496,87 +462,29 @@ services:
             target:
               type: Utilization
               averageUtilization: 70
-        
 
-  # paymentservice:
-  #   image: oktbabs/paymentservice:latest
-  #   replicas: 2
-  #   port: 50051
-  #   containerPort: 50051
-  #   livenessProbe:
-  #     tcpSocket:
-  #       port: 50051
-  #     initialDelaySeconds: 5
-  #     periodSeconds: 10
+  # productcatalogservice:
+  #   image: oktbabs/productcatalogservice:latest
+  #   port: 3550
+  #   targetPort: 3550
+  #   env:
+  #     - name: PORT
+  #       value: "3550"
+  #     - name: DISABLE_PROFILER
+  #       value: "1"
   #   readinessProbe:
-  #     tcpSocket:
-  #       port: 50051
-  #     initialDelaySeconds: 5
-  #     periodSeconds: 10
-  #   hpa:
-  #     enabled: true
-  #     minReplicas: 1
-  #     maxReplicas: 6
-  #     metrics:
-  #       - type: Resource
-  #         resource:
-  #           name: cpu
-  #           target:
-  #             type: Utilization
-  #             averageUtilization: 75
-
-  paymentservice:
-    image: oktbabs/paymentservice:latest
-    port: 50051
-    targetPort: 50051
-    env:
-      - name: PORT
-        value: "50051"
-      - name: DISABLE_PROFILER
-        value: "1"
-    readinessProbe:
-      exec:
-        command: ["/bin/grpc_health_probe", "-addr=:50051"]
-    livenessProbe:
-      exec:
-        command: ["/bin/grpc_health_probe", "-addr=:50051"]
-    resources:
-      requests:
-        cpu: 100m
-        memory: 64Mi
-      limits:
-        cpu: 200m
-        memory: 128Mi
-    hpa:
-      enabled: true
-      minReplicas: 1
-      maxReplicas: 6
-      metrics:
-        - type: Resource
-          resource:
-            name: cpu
-            target:
-              type: Utilization
-              averageUtilization: 75        
-
-
-  # recommendationservice:
-  #   image: oktbabs/recommendationservice:latest
-  #   replicas: 1
-  #   port: 8080
-  #   containerPort: 8080
+  #     exec:
+  #       command: ["/bin/grpc_health_probe", "-addr=:3550"]
   #   livenessProbe:
-  #     httpGet:
-  #       path: /healthz
-  #       port: 8080
-  #     initialDelaySeconds: 5
-  #     periodSeconds: 10
-  #   readinessProbe:
-  #     httpGet:
-  #       path: /ready
-  #       port: 8080
-  #     initialDelaySeconds: 5
-  #     periodSeconds: 10
+  #     exec:
+  #       command: ["/bin/grpc_health_probe", "-addr=:3550"]
+  #   resources:
+  #     requests:
+  #       cpu: 100m
+  #       memory: 64Mi
+  #     limits:
+  #       cpu: 200m
+  #       memory: 128Mi
   #   hpa:
   #     enabled: true
   #     minReplicas: 1
@@ -587,34 +495,88 @@ services:
   #           name: cpu
   #           target:
   #             type: Utilization
-  #             averageUtilization: 65
+  #             averageUtilization: 70
+        
+
+  paymentservice:
+    image: oktbabs/paymentservice:latest
+    replicas: 2
+    port: 50051
+    containerPort: 50051
+    livenessProbe:
+      tcpSocket:
+        port: 50051
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      tcpSocket:
+        port: 50051
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    hpa:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 6
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 75
+
+  # paymentservice:
+  #   image: oktbabs/paymentservice:latest
+  #   port: 50051
+  #   targetPort: 50051
+  #   env:
+  #     - name: PORT
+  #       value: "50051"
+  #     - name: DISABLE_PROFILER
+  #       value: "1"
+  #   readinessProbe:
+  #     exec:
+  #       command: ["/bin/grpc_health_probe", "-addr=:50051"]
+  #   livenessProbe:
+  #     exec:
+  #       command: ["/bin/grpc_health_probe", "-addr=:50051"]
+  #   resources:
+  #     requests:
+  #       cpu: 100m
+  #       memory: 64Mi
+  #     limits:
+  #       cpu: 200m
+  #       memory: 128Mi
+  #   hpa:
+  #     enabled: true
+  #     minReplicas: 1
+  #     maxReplicas: 6
+  #     metrics:
+  #       - type: Resource
+  #         resource:
+  #           name: cpu
+  #           target:
+  #             type: Utilization
+  #             averageUtilization: 75        
+
 
   recommendationservice:
     image: oktbabs/recommendationservice:latest
+    replicas: 1
     port: 8080
-    targetPort: 8080
-    env:
-      - name: PORT
-        value: "8080"
-      - name: PRODUCT_CATALOG_SERVICE_ADDR
-        value: "productcatalogservice:3550"
-      - name: DISABLE_PROFILER
-        value: "1"
-    readinessProbe:
-      exec:
-        command: ["/bin/grpc_health_probe", "-addr=:8080"]
-      periodSeconds: 5
+    containerPort: 8080
     livenessProbe:
-      exec:
-        command: ["/bin/grpc_health_probe", "-addr=:8080"]
-      periodSeconds: 5
-    resources:
-      requests:
-        cpu: 100m
-        memory: 220Mi
-      limits:
-        cpu: 200m
-        memory: 450Mi
+      httpGet:
+        path: /healthz
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 10
     hpa:
       enabled: true
       minReplicas: 1
@@ -626,6 +588,44 @@ services:
             target:
               type: Utilization
               averageUtilization: 65
+
+  # recommendationservice:
+  #   image: oktbabs/recommendationservice:latest
+  #   port: 8080
+  #   targetPort: 8080
+  #   env:
+  #     - name: PORT
+  #       value: "8080"
+  #     - name: PRODUCT_CATALOG_SERVICE_ADDR
+  #       value: "productcatalogservice:3550"
+  #     - name: DISABLE_PROFILER
+  #       value: "1"
+  #   readinessProbe:
+  #     exec:
+  #       command: ["/bin/grpc_health_probe", "-addr=:8080"]
+  #     periodSeconds: 5
+  #   livenessProbe:
+  #     exec:
+  #       command: ["/bin/grpc_health_probe", "-addr=:8080"]
+  #     periodSeconds: 5
+  #   resources:
+  #     requests:
+  #       cpu: 100m
+  #       memory: 220Mi
+  #     limits:
+  #       cpu: 200m
+  #       memory: 450Mi
+  #   hpa:
+  #     enabled: true
+  #     minReplicas: 1
+  #     maxReplicas: 3
+  #     metrics:
+  #       - type: Resource
+  #         resource:
+  #           name: cpu
+  #           target:
+  #             type: Utilization
+  #             averageUtilization: 65
 
   checkoutservice:
     image: oktbabs/checkoutservice:latest
@@ -671,64 +671,28 @@ services:
               type: Utilization
               averageUtilization: 70
 
-  # emailservice:
-  #   image: oktbabs/emailservice:latest
-  #   replicas: 1
-  #   port: 5000
-  #   containerPort: 5000
-  #   ingress:
-  #     enabled: true
-  #     host: email.example.com
-  #     path: /
-  #     pathType: Prefix
-  #   livenessProbe:
-  #     httpGet:
-  #       path: /healthz
-  #       port: 5000
-  #     initialDelaySeconds: 3
-  #     periodSeconds: 10
-  #   readinessProbe:
-  #     httpGet:
-  #       path: /ready
-  #       port: 5000
-  #     initialDelaySeconds: 3
-  #     periodSeconds: 10
-  #   hpa:
-  #     enabled: true
-  #     minReplicas: 1
-  #     maxReplicas: 4
-  #     metrics:
-  #       - type: Resource
-  #         resource:
-  #           name: cpu
-  #           target:
-  #             type: Utilization
-  #             averageUtilization: 70
-
   emailservice:
     image: oktbabs/emailservice:latest
+    replicas: 1
     port: 5000
-    targetPort: 8080
-    env:
-      - name: PORT
-        value: "8080"
-      - name: DISABLE_PROFILER
-        value: "1"
-    readinessProbe:
-      exec:
-        command: ["/bin/grpc_health_probe", "-addr=:8080"]
-      periodSeconds: 5
+    containerPort: 5000
+    ingress:
+      enabled: true
+      host: email.example.com
+      path: /
+      pathType: Prefix
     livenessProbe:
-      exec:
-        command: ["/bin/grpc_health_probe", "-addr=:8080"]
-      periodSeconds: 5
-    resources:
-      requests:
-        cpu: 100m
-        memory: 64Mi
-      limits:
-        cpu: 200m
-        memory: 128Mi
+      httpGet:
+        path: /healthz
+        port: 5000
+      initialDelaySeconds: 3
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 5000
+      initialDelaySeconds: 3
+      periodSeconds: 10
     hpa:
       enabled: true
       minReplicas: 1
@@ -739,4 +703,40 @@ services:
             name: cpu
             target:
               type: Utilization
-              averageUtilization: 70        
+              averageUtilization: 70
+
+  # emailservice:
+  #   image: oktbabs/emailservice:latest
+  #   port: 5000
+  #   targetPort: 8080
+  #   env:
+  #     - name: PORT
+  #       value: "8080"
+  #     - name: DISABLE_PROFILER
+  #       value: "1"
+  #   readinessProbe:
+  #     exec:
+  #       command: ["/bin/grpc_health_probe", "-addr=:8080"]
+  #     periodSeconds: 5
+  #   livenessProbe:
+  #     exec:
+  #       command: ["/bin/grpc_health_probe", "-addr=:8080"]
+  #     periodSeconds: 5
+  #   resources:
+  #     requests:
+  #       cpu: 100m
+  #       memory: 64Mi
+  #     limits:
+  #       cpu: 200m
+  #       memory: 128Mi
+  #   hpa:
+  #     enabled: true
+  #     minReplicas: 1
+  #     maxReplicas: 4
+  #     metrics:
+  #       - type: Resource
+  #         resource:
+  #           name: cpu
+  #           target:
+  #             type: Utilization
+  #             averageUtilization: 70        
